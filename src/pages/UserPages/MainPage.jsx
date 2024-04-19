@@ -1,8 +1,10 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import RedButton from '../../ui/RedButton'
+import { useNavigate } from 'react-router-dom'
 
 const MainPage = () => {
+    const navigate = useNavigate();
   return (
     <Wrapper>
         <p className='date'>2023-06-21</p>
@@ -124,7 +126,7 @@ const MainPage = () => {
         </Table>
 
         <div className='button_div'>
-            <RedButton text='Подать заявку' onClick={() => console.log("Click")}/>
+            <RedButton text='Подать заявку'  onClick={() => navigate("/form")}/>
         </div>
     </Wrapper>
   )

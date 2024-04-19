@@ -1,4 +1,8 @@
-initialUserState = {
+import axiosInstance from "../api/axios.js"
+import { create } from "zustand";
+import { persist, devtools } from 'zustand/middleware'
+
+const initialUserState = {
     id: "",
     role: "",//ROLE_ADMIN/ROLE_KOMISSAR/ROLE_HEAD/ROLE_SECRETARY
     department: "",
@@ -7,8 +11,28 @@ initialUserState = {
     email: "",
 }
 
-const fetchUser = async (username, password) => {
-    
+const  register = async (user, password, token) => {
+    try {
+        const { data } = axiosInstance.post(`users/${token}`, {...user,password:password})
+        localStorage.setItem("accessgemplanet", data.access);
+        localStorage.setItem("refreshgemplanet", data.refresh);
+        return data
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+}
+
+const  signin = async (email, password) => {
+    try {
+        const { data } = axiosInstance.get(`token/`, {email:email,password:password})
+        localStorage.setItem("accessgemplanet", data.access);
+        localStorage.setItem("refreshgemplanet", data.refresh);
+        return data
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
 }
 
 const useUserStore = create(
@@ -16,12 +40,13 @@ const useUserStore = create(
         persist(
             (set, get) => ({
                 user: initialUserState,
-                signIn: async (username, password) => {
-                    const user = await fetchUser(username, password);
+                signIn: async (email, password) => {
+                    const user = await signin(email, password);
                     set(()=>({user:user}));
                 },
-                signUp: async (user) => {
-                    const response = await postRegister(user);
+                register: async (user, password) => {
+                    const response = await register(user, password);
+                    set((state)=>({user: {...state.user,role:response.role}}));
                 },
                 reset: () => set(()=>({user:{...initialUserState}})),
             }),

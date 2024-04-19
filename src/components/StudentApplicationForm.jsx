@@ -64,8 +64,9 @@ const StudentApplicationForm = () => {
   };
   const [imageSrcs, setImageSrcs] = useState(null);
   return (
-    <Flex w={'100%'} justify={'center'} mt={4}>
+    <Flex w={'100%'} justify={'center'} mt={8}>
       <Box w={'50%'}>
+        <Text>Форма заявления поступления на магистратуру/докторантуру</Text>
         <Formik
           initialValues={{
             firstname: '',

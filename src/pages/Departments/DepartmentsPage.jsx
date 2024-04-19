@@ -6,11 +6,11 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHea
 import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/table'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import FilterButton from '../ui/FilterButton'
-import PageTitle from '../ui/PageTitle'
-import RedButton from '../ui/RedButton'
+import FilterButton from '../../ui/FilterButton'
+import PageTitle from '../../ui/PageTitle'
+import RedButton from '../../ui/RedButton'
 
-const CommissionPage = () => {
+const DepartmentPage = () => {
 
   const [filter, setFilter] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,8 +20,8 @@ const CommissionPage = () => {
   return (
     <Wrapper>
         <div className='title'>
-          <PageTitle text="Коммисия"/>
-          <RedButton text='+ Добавить коммисию' onClick={onOpen}/>
+          <PageTitle text="Зав. кафедры"/>
+          <RedButton text='+ Добавить зав. кафедру' onClick={onOpen}/>
         </div>
         <div className='filters'>
           <FilterButton text="Новые" onClick={() => setFilter(0)} active={filter === 0} />
@@ -69,12 +69,12 @@ const CommissionPage = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader textAlign={'center'}>Добавление коммисии</ModalHeader>
+              <ModalHeader textAlign={'center'}>Добавление зав. кафедры</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <p style={{fontWeight: '500'}}>Email:</p>
                 <Input focusBorderColor="#b80924" mb={3} description="email" label='Email' />
-                <p style={{fontWeight: '500', margin: '5px auto', textAlign: 'center'}}>Чтобы добавить члена коммисии введите его email адресс.</p>
+                <p style={{fontWeight: '500', margin: '5px auto', textAlign: 'center'}}>Чтобы добавить заведующего кафедрой введите его email адресс.</p>
               </ModalBody>
 
               <ModalFooter>
@@ -86,7 +86,7 @@ const CommissionPage = () => {
   )
 }
 
-export default CommissionPage
+export default DepartmentPage
 
 const Wrapper = styled('div')`
   padding: 60px 10px 20px 10px;

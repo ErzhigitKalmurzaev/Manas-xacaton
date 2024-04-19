@@ -1,16 +1,18 @@
 import { Input } from '@chakra-ui/input'
-import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/table'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { useNavigation } from 'react-router'
 import FilterButton from '../ui/FilterButton'
 import PageTitle from '../ui/PageTitle'
+import { Text } from '@chakra-ui/layout'
+import RedButton from '../ui/RedButton'
+import { useNavigate } from 'react-router'
 
-const QuestionnairesPage = () => {
+const ExamsDetailPage = () => {
 
-  // const navigation = useNavigation();
+  const navigation = useNavigate();
 
   const [filter, setFilter] = useState(0);
+  const [grade, setGrade] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -51,11 +53,7 @@ const QuestionnairesPage = () => {
 
   return (
     <Wrapper>
-        <PageTitle text="Анкеты"/>
-        <div className='filters'>
-          <FilterButton text="Магистратура" onClick={() => setFilter(0)} active={filter === 0} />
-          <FilterButton text="Докторантура" onClick={() => setFilter(1)} active={filter === 1} />
-        </div>
+        <PageTitle text="Экзамен студента"/>
         <div
           onDrop={handleDrop}
           onDragOver={handleDragOver}
@@ -83,12 +81,18 @@ const QuestionnairesPage = () => {
               <input type="file" onChange={handleFileChange} />
             </div>
           )}
+
+        </div>
+        <div className='grade'>
+            <Text mb={1} fontWeight={500}>Оценка:</Text>
+            <Input focusBorderColor="#b80924" w={'40%'} mb={6} placeholder='Введите оценку...' value={grade} onChange={(e) => setGrade(e.target.value)}/>
+            <RedButton text="Отправить" onClick={() => navigation(-1)}/>
         </div>
     </Wrapper>
   )
 }
 
-export default QuestionnairesPage
+export default ExamsDetailPage
 
 const Wrapper = styled('div')`
   padding: 60px 10px 20px 10px;
@@ -110,5 +114,16 @@ const Wrapper = styled('div')`
     text-align: 'center';
     padding: '20px';
     /* border-bottom: 1px solid grey; */
+  }
+
+  .grade {
+    display: flex;
+    flex-direction: column;
+    button {
+        width: 150px;
+        padding: 8px 12px;
+        align-self: start;
+        font-size: 16px;
+    }
   }
 `;

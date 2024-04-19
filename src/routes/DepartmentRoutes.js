@@ -1,6 +1,7 @@
 import React from 'react'
 import {Route, Routes} from 'react-router-dom'
 import ApplicationPage from '../pages/ApplicationPage'
+import ApplicationDetailPage from '../pages/Moderator/ApplicationDetailPage'
 import DepartmentLayout from '../layout/DepartmentLayout'
 import RatingPage from '../pages/RatingPage'
 import CommissionPage from '../pages/CommissionPage'
@@ -11,6 +12,7 @@ const DepartmentRoutes = () => {
     <Routes>
       <Route path="/" element={<DepartmentLayout />} >
         <Route path="applications" element={<ApplicationPage />} />  
+        <Route path="applications/detail" element={<ApplicationDetailPage/>} />  
         <Route path="rating" element={<RatingPage />} />  
         <Route path="commission" element={<CommissionPage />} />  
         <Route path="questionnaires" element={<QuestionnairesPage />} />  

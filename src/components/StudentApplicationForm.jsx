@@ -10,7 +10,9 @@ import {
   Button,
   FormErrorMessage,
   Box,
+  Flex
 } from '@chakra-ui/react';
+import ImageUpload from './ImageUpload';
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required('Обязательное поле'),
@@ -30,16 +32,10 @@ const validationSchema = Yup.object().shape({
   certs: Yup.mixed().required('Обязательное поле'),
 });
 
-const StudentRegistrationForm = () => {
-    const styles = {
-        input: {
-            borderWidth: '2px',
-            borderColor: 'gray.300',
-        },
-    };
+const StudentApplicationForm = () => {
   return (
-    <Box maxWidth="500px" mx="auto" mt="50px">
-        <Input/>
+    <Flex w={'100%'} justify={'center'}>
+    <Box w={'70%'}>
       <Formik
         initialValues={{
           firstname: '',
@@ -67,7 +63,7 @@ const StudentRegistrationForm = () => {
               {({ field }) => (
                 <FormControl isInvalid={!!formik.errors.firstname}>
                   <FormLabel htmlFor="firstname">Имя</FormLabel>
-                  <Input {...field} placeholder="Имя" sx={styles.input}/>
+                  <Input {...field} placeholder="Имя" />
                   <FormErrorMessage color={'red'}>{formik.errors.firstname}</FormErrorMessage>
                 </FormControl>
               )}
@@ -77,7 +73,7 @@ const StudentRegistrationForm = () => {
               {({ field }) => (
                 <FormControl isInvalid={!!formik.errors.lastname}>
                   <FormLabel htmlFor="lastname">Фамилия</FormLabel>
-                  <Input {...field} placeholder="Фамилия" />
+                  <Input {...field} placeholder="Фамилия" variant={'outline'}/>
                   <FormErrorMessage>{formik.errors.lastname}</FormErrorMessage>
                 </FormControl>
               )}
@@ -171,7 +167,7 @@ const StudentRegistrationForm = () => {
               {({ field }) => (
                 <FormControl isInvalid={!!formik.errors.photo}>
                   <FormLabel htmlFor="photo">Фото</FormLabel>
-                  <Input {...field} type="file" />
+                  <ImageUpload field={field}/>
                   <FormErrorMessage>{formik.errors.photo}</FormErrorMessage>
                 </FormControl>
               )}
@@ -187,6 +183,8 @@ const StudentRegistrationForm = () => {
               )}
             </Field>
 
+            <ImageUpload/>
+
             <Button mt={4} colorScheme="teal" isLoading={formik.isSubmitting} type="submit">
               Зарегистрироваться
             </Button>
@@ -194,7 +192,8 @@ const StudentRegistrationForm = () => {
         )}
       </Formik>
     </Box>
+    </Flex>
   );
 };
 
-export default StudentRegistrationForm;
+export default StudentApplicationForm;

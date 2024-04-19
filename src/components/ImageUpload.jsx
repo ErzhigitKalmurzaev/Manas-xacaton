@@ -1,137 +1,72 @@
+import React from 'react'
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import {
-    AspectRatio,
-    Box,
-    BoxProps,
-    Container,
-    forwardRef,
-    Heading,
-    Image,
+    FormControl,
+    FormLabel,
     Input,
-    Stack,
-    Text
-  } from "@chakra-ui/react";
-  import { motion, useAnimation } from "framer-motion";
-  
-  const first = {
-    rest: {
-      scale: 0.95,
-      filter: "grayscale(80%)",
-      transition: {
-        duration: 0.5,
-        type: "tween",
-        ease: "easeIn"
-      }
-    },
-    hover: {
-      scale: 1.1,
-      filter: "grayscale(0%)",
-      transition: {
-        duration: 0.4,
-        type: "tween",
-        ease: "easeOut"
-      }
-    }
-  };
-  
-  const PreviewImage = forwardRef((props, ref) => {
-    return (
-      <Box
-        bg="white"
-        top="0"
-        height="100%"
-        width="100%"
-        position="absolute"
-        borderWidth="1px"
-        borderStyle="solid"
-        rounded="sm"
-        borderColor="gray.400"
-        as={motion.div}
-        backgroundSize="cover"
-        backgroundRepeat="no-repeat"
-        backgroundPosition="center"
-        backgroundImage={`url("https://image.shutterstock.com/image-photo/paella-traditional-classic-spanish-seafood-600w-1662253543.jpg")`}
-        {...props}
-        ref={ref}
-      />
-    );
-  });
-  
-  const ImageUpload = ({field}) => {
-    const controls = useAnimation();
-    const startAnimation = () => controls.start("hover");
-    const stopAnimation = () => controls.stop();
-    return (
-      <Container my="12">
-        <AspectRatio width="64" ratio={1}>
-          <Box
-            borderColor="gray.300"
-            borderStyle="dashed"
-            borderWidth="2px"
-            rounded="md"
-            shadow="sm"
-            role="group"
-            transition="all 150ms ease-in-out"
-            _hover={{
-              shadow: "md"
-            }}
-            as={motion.div}
-            initial="rest"
-            animate="rest"
-            whileHover="hover"
-          >
-            <Box position="relative" height="100%" width="100%">
-              <Box
-                position="absolute"
-                top="0"
-                left="0"
-                height="100%"
-                width="100%"
-                display="flex"
-                flexDirection="column"
-              >
-                <Stack
-                  height="100%"
-                  width="100%"
-                  display="flex"
-                  alignItems="center"
-                  justify="center"
-                  spacing="4"
-                >
-                  <Box height="48" width="32" position="relative" >
-                    {/* <PreviewImage
-                      variants={first}
-                      backgroundImage={field===null?"url('https://cdn-icons-png.flaticon.com/512/1534/1534039.png')":{field.value}}
-                    /> */}
-                    {field}
-                  </Box>
-                  <Stack  textAlign="center" spacing="1">
-                    <Heading fontSize="lg" color="gray.700" fontWeight="bold">
-                      Drop images here
-                    </Heading>
-                    <Text fontWeight="light">or click to upload</Text>
-                  </Stack>
-                </Stack>
-              </Box>
-              <Input
-                {...field}
-                type="file"
-                height="100%"
-                width="100%"
-                position="absolute"
-                top="0"
-                left="0"
-                opacity="0"
-                aria-hidden="true"
-                accept="image/*"
-                onDragEnter={startAnimation}
-                onDragLeave={stopAnimation}
-              />
-              
-            </Box>
-          </Box>
-        </AspectRatio>
-      </Container>
-    );
-  }
+    Select,
+    Checkbox,
+    Button,
+    FormErrorMessage,
+    Box,
+    Flex,
+    Image,
+    HStack
+} from '@chakra-ui/react';
 
-  export default ImageUpload
+function ImageUpload({ formik, set, sources, target, title, multiple }) {
+    const handleMultipleFileChange = (e) => {
+        const files = e.target.files;
+
+        const filePromises = Array.from(files).map((file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    resolve(event.target.result);
+                };
+                reader.onerror = (error) => {
+                    reject(error);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(filePromises)
+            .then((results) => {
+                set({ ...sources, [target]: results });
+                formik.setFieldValue({ target }, files); // Установите все файлы в Formik
+            })
+            .catch((error) => {
+                console.error("Error reading files:", error);
+            });
+    };
+    return (
+        <Field name={target}>
+            {({ field }) => (
+                <FormControl isInvalid={!!formik.errors[target]}>
+                    <FormLabel htmlFor={target}>{title}</FormLabel>
+                    <Box border={'2px dashed'} borderColor={'gray.300'} rounded={'lg'}>
+                    {sources !== null && sources[target] && (
+                        <Flex maxW={'80%'}>
+                            {sources[target].map((tgt, index) => (
+                                <Image key={index} src={tgt} w={'100px'} h={'100px'} m={2} alt={`uploaded ${target}`} />
+                            ))}
+                        </Flex>
+                    )}
+                    <Input
+                        type="file"
+                        multiple={multiple}
+                        onChange={(e) => { handleMultipleFileChange(e, formik) }}
+                        border={'none'}
+                        mt={2}
+                    />
+                    </Box>
+                    <FormErrorMessage>{formik.errors[target]}</FormErrorMessage>
+                </FormControl>
+            )}
+        </Field>
+    )
+}
+
+export default ImageUpload

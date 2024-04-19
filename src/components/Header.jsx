@@ -1,24 +1,50 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import manas_logo from '../assets/image/Manas_logo.png';
+import { Button, useDisclosure } from '@chakra-ui/react'
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+} from '@chakra-ui/react'
 
 const Header = () => {
-  return (
-    <Wrapper>
-        <img src={manas_logo} alt="manas_icon" style={{width: 90, height: 90}} />
-        <Buttons>
-            <div className='first_words'>
-                <p className='univer'>КЫРГЫЗСКО-ТУРЕЦКИЙ УНИВЕРСИТЕТ МАНАС</p>
-                <p className='slogan'>Больше, чем просто университет</p>
-            </div>
-            <div>
-                <SignInButton>
-                    Войти
-                </SignInButton>
-            </div>
-        </Buttons>
-    </Wrapper>
-  )
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+        <Wrapper>
+            <img src={manas_logo} alt="manas_icon" style={{ width: 90, height: 90 }} />
+            <Buttons>
+                <div className='first_words'>
+                    <p className='univer'>КЫРГЫЗСКО-ТУРЕЦКИЙ УНИВЕРСИТЕТ МАНАС</p>
+                    <p className='slogan'>Больше, чем просто университет</p>
+                </div>
+                <div>
+                    <Button onClick={onOpen}>Войти</Button>
+
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay backdropFilter='blur(10px) hue-rotate(90deg)'/>
+                        <ModalContent>
+                            <ModalHeader>Modal Title</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                            </ModalBody>
+
+                            <ModalFooter>
+                                <Button colorScheme='blue' mr={3} onClick={onClose}>
+                                    Close
+                                </Button>
+                                <Button variant='ghost'>Secondary Action</Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
+                </div>
+            </Buttons>
+        </Wrapper>
+    )
 }
 
 export default Header

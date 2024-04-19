@@ -64,7 +64,7 @@ const StudentApplicationForm = () => {
   };
   const [imageSrcs, setImageSrcs] = useState(null);
   return (
-    <Flex w={'100%'} justify={'center'}>
+    <Flex w={'100%'} justify={'center'} mt={4}>
       <Box w={'50%'}>
         <Formik
           initialValues={{

@@ -1,6 +1,6 @@
 initialUserState = {
     id: "",
-    role: "",
+    role: "",//ROLE_ADMIN/ROLE_KOMISSAR/ROLE_HEAD/ROLE_SECRETARY
     department: "",
     firstName: "",
     lastName: "",

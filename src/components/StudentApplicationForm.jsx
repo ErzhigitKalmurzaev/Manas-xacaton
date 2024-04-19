@@ -14,7 +14,8 @@ import {
   Image,
   HStack,
   VStack,
-  FormHelperText
+  FormHelperText,
+  Text
 } from '@chakra-ui/react';
 import ImageUpload from './ImageUpload';
 

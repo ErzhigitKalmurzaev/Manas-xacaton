@@ -7,7 +7,7 @@ const UserLayouts = () => {
   return (
     <div>
         <Header/>
-        <Outlet/>
+            <Outlet/>
         <Footer/>
     </div>
   )

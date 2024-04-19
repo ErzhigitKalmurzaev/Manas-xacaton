@@ -1,4 +1,4 @@
-import { Button, Flex } from '@chakra-ui/react'
+import { Button, Flex, Input} from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { Outlet } from 'react-router-dom'
 
@@ -19,6 +19,7 @@ const DepartmentLayout = () => {
                             {page.text}
                         </Button>
                     ))}
+                    <Input/>
                 </Flex>
                 <Flex>
                     <Outlet/>

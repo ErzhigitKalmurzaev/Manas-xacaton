@@ -67,7 +67,9 @@ const StudentApplicationForm = () => {
   return (
     <Flex w={'100%'} justify={'center'} mt={8}>
       <Box w={'50%'}>
-        <Text>Форма заявления поступления на магистратуру/докторантуру</Text>
+        <Box textAlign={'center'}>
+          <Text fontSize={24} fontWeight={'semibold'} pb={4}>Форма заявления поступления на магистратуру/докторантуру</Text>
+        </Box>
         <Formik
           initialValues={{
             firstname: '',
@@ -224,7 +226,7 @@ const StudentApplicationForm = () => {
                 target="certs"
                 title={"Сертификаты"} />
 
-              <Button mt={4} colorScheme="teal" isLoading={formik.isSubmitting} type="submit" >
+              <Button mt={4} bg={'red.700'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }}>
                 Зарегистрироваться
               </Button>
               </VStack>

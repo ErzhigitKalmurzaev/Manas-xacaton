@@ -19,7 +19,7 @@ import {
     Select,
     Box
 } from '@chakra-ui/react';
-import useUser from '../store/useUser';
+import useUserStore from '../store/useUserStore';
 
 function RegistrationPage() {
     const [userData, setUserData] = useState({email:"", token:""});
@@ -30,8 +30,8 @@ function RegistrationPage() {
         setUserData({email, token});
       }, []);
 
-    const register = useUser((state) => state.register)
-    const state = useUser.getState();
+    const register = useUserStore((state) => state.register)
+    const state = useUserStore.getState();
     const [show, setShow] = React.useState(false);
     const handleClick = () => setShow(!show);
 

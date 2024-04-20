@@ -12,7 +12,7 @@ const ModeratorRoutes = () => {
         <Route path='/' element={<ModeratorLayout/>}>
             <Route index element={<Navigate to="applications" />} /> 
             <Route path='applications' element={<ApplicationPage/>}/>
-            <Route path="applications/detail" element={<ApplicationDetailPage/>} /> 
+            <Route path="applications/:id" element={<ApplicationDetailPage/>} /> 
             <Route path="exam_results" element={<ExamResultsUploadPage/>} /> 
         </Route>
     </Routes>

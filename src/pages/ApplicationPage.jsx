@@ -41,7 +41,7 @@ const ApplicationPage = () => {
               <Tbody>
                 {
                   applications_list.map((item,index) =>{
-                    if (item.is_confirmed === filter) {
+                    if (item.is_confirmed === filter.toString()) {
                       return (
                         <Tr 
                           key={index} 

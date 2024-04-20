@@ -16,7 +16,7 @@ const ApplicationDetailPage = () => {
 
   const getApplicationById = useUserStore(state => state.getApplicationById);
   const postConfirmStatus = useUserStore(state => state.postConfirmStatus);
-  const application = useUserStore(state => state.application)
+  const application_info = useUserStore(state => state.application_info)
 
   const [filter, setFilter] = useState(0);
   const [imageUrl, setImageUrl] = useState(null);
@@ -54,20 +54,20 @@ const ApplicationDetailPage = () => {
             <div className="row">
                 <div className="col">
                     <Text fontWeight={500}>Имя</Text>
-                    <Input value={application.first_name} disabled/>
+                    <Input value={application_info.first_name} disabled/>
                 </div>
                 <div className="col">
                     <Text fontWeight={500}>Фамилия</Text>
-                    <Input value={application.last_name} disabled/>
+                    <Input value={application_info.last_name} disabled/>
                 </div>
             </div>
             <div className="row">
                 <div className="col">
                     <Text fontWeight={500}>Телефон</Text>
-                    <Input  value={application.phone_number} disabled/>
+                    <Input  value={application_info.phone_number} disabled/>
                 </div>
                 <div className="col">
-                    <Checkbox size='lg' mt={5} colorScheme='blue' checked={application?.isForeigner}>
+                    <Checkbox size='lg' mt={5} colorScheme='blue' checked={application_info?.isForeigner}>
                         Иностранец
                     </Checkbox>
                 </div>
@@ -75,35 +75,35 @@ const ApplicationDetailPage = () => {
             <div className="row">
                 <div className="col">
                     <Text fontWeight={500}>Тип</Text>
-                    <Input value={application?.type} disabled/>
+                    <Input value={application_info?.type} disabled/>
                 </div>
                 <div className="col">
                     <Text fontWeight={500}>Email</Text>
-                    <Input value={application?.email} disabled/>
+                    <Input value={application_info?.email} disabled/>
                 </div>
             </div>
             <div className="row">
                 <div className="col">
                     <Text fontWeight={500}>Фото (4x3)</Text>
-                    <img src={application?.photo} alt="" />
+                    <img src={application_info?.photo} alt="" />
                 </div>
                 <div className="col">
                     <Text fontWeight={500}>Диплом</Text>
-                    <img src={application?.diplom} alt="" />
+                    <img src={application_info?.diplom} alt="" />
                 </div>
                 <div className="col">
                     <Text fontWeight={500}>Диплом (подтверждение для иностранцев)</Text>
-                    <img src={application?.nostrification} alt="" />
+                    <img src={application_info?.nostrification} alt="" />
                 </div>
             </div>
             <div className="row">
                 <div className="col">
                     <Text fontWeight={500}>Паспорт (спереди)</Text>
-                    <img src={application?.passport_front} alt="" />
+                    <img src={application_info?.passport_front} alt="" />
                 </div>
                 <div className="col">
                     <Text fontWeight={500}>Паспорт (сзади)</Text>
-                    <img src={application?.passport_back} alt="" />
+                    <img src={application_info?.passport_back} alt="" />
                 </div>
             </div>
             <div className='submit_button'>

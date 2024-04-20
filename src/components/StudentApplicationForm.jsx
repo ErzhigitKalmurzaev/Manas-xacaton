@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import ImageUpload from './ImageUpload';
 import useUserStore from '../store/useUserStore';
+import { toast } from 'react-toastify';
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required('Обязательное поле'),
@@ -39,13 +40,17 @@ const validationSchema = Yup.object().shape({
 const StudentApplicationForm = () => {
   const application = useUserStore((state) => state.application);
   const handleSubmit = async (values, { setSubmitting,setFieldError }) => {
-    console.log(values);
     const response = await application(values);
+    if(response) {
+      toast.success("Ваша заявка успешно подана!")
+    } else {
+      toast.error("Произошла ошибка!")
+    }
     setSubmitting(false);
   };
   const [imageSrcs, setImageSrcs] = useState(null);
   return (
-    <Flex w={'100%'} justify={'center'} mt={8}>
+    <Flex w={'100%'} justify={'center'} mt={8} >
       <Box w={'50%'} bg={'gray.50'} rounded={'2xl'} p={4}>
         <Box textAlign={'center'}>
           <Text fontSize={24} fontWeight={'semibold'} pb={4}>Форма заявления поступления на магистратуру/докторантуру</Text>
@@ -214,7 +219,7 @@ const StudentApplicationForm = () => {
                 title={"Сертификаты"} />
 
               <Button mt={4} bg={'red.700'} color={'white'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }} >
-                Зарегистрироваться
+                Подать заявку
               </Button>
               </VStack>
             </Form>

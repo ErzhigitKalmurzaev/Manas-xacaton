@@ -130,19 +130,30 @@ const postConfirmStatus = async (props) => {
     }
 }
 
+const createCommission = async (props) => {
+    try {
+        const { data } = await axiosInstance.post(`users/commission/create/`, props);
+        return data;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
 const useUserStore = create(
     devtools(
         persist(
             (set, get) => ({
                 user: initialUserState,
                 applications_list: [''],
-                application: {},
+                application_info: {},
                 signIn: async (email, password) => {
                     const user = await signin(email, password);
                     set(() => ({ user: user }));
                 },
                 application: async (formData) => {
                     const response = await fetchApplication(formData);
+                    return response
                 },
                 postExamLists: async (formData) => {
                     const response = await fetchExamLists(formData);
@@ -159,11 +170,14 @@ const useUserStore = create(
                 },
                 getApplicationById: async ({ id }) => {
                     const data = await getApplicationById({ id });
-                    set(state => ({ application: data }))
+                    set(state => ({ application_info: data }))
                 },
                 postConfirmStatus: async (props) => {
                     const data = await postConfirmStatus(props);
                     return data;
+                },
+                createCommission: async (props) => {
+                    const data = await createCommission(props);
                 },
                 reset: () => set(() => ({ user: { ...initialUserState } })),
             }),

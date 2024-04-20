@@ -10,6 +10,7 @@ import FilterButton from '../ui/FilterButton'
 import PageTitle from '../ui/PageTitle'
 import RedButton from '../ui/RedButton'
 import axiosInstance from '../api/axios'
+import { toast } from 'react-toastify'
 
 const CommissionPage = () => {
 
@@ -19,7 +20,13 @@ const CommissionPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const handleNewCommission = async () => {
     try {
-      await axiosInstance.post(`/users/commission/create/`, {email:email})
+      const response = await axiosInstance.post(`/users/commission/create/`, {email:email, role: 'COMMISSIONER', department: 1})
+      if(response) {
+        toast.success('Ссылка на регистрацию отправлено на email!')
+      } else {
+        toast.error('Произошла ошибка!')
+      }
+      onClose()
     } catch (error) {
       console.error(error);
       return false;

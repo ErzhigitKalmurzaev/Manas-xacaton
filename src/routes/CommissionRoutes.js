@@ -5,6 +5,7 @@ import ExamsDetailPage from '../pages/ExamsDetailPage';
 import ExamsPage from '../pages/ExamsPage';
 import QuestionnairesPage from '../pages/QuestionnairesPage'
 import RatingPage from '../pages/RatingPage';
+import ApplicationDetailPage from '../pages/Moderator/ApplicationDetailPage';
 
 const CommissionRoute = () => {
 

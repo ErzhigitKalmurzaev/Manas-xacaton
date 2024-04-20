@@ -12,7 +12,7 @@ const DepartmentRoutes = () => {
     <Routes>
       <Route path="/" element={<DepartmentLayout />} >
         <Route path="applications" element={<ApplicationPage />} />  
-        <Route path="applications/detail" element={<ApplicationDetailPage/>} />  
+        <Route path="applications/:id" element={<ApplicationDetailPage/>} />  
         <Route path="rating" element={<RatingPage />} />  
         <Route path="commission" element={<CommissionPage />} />  
         <Route path="questionnaires" element={<QuestionnairesPage />} />  

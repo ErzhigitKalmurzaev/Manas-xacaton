@@ -2,20 +2,29 @@ import { Checkbox } from '@chakra-ui/checkbox'
 import { Input } from '@chakra-ui/input'
 import { Text } from '@chakra-ui/layout'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import useUserStore from '../../store/useUserStore'
 import PageTitle from '../../ui/PageTitle'
 import RedButton from '../../ui/RedButton'
 
 const ApplicationDetailPage = () => {
 
   const navigation = useNavigate();
+  const { id } = useParams();
+
+  const getApplicationById = useUserStore(state => state.getApplicationById);
+  const application = useUserStore(state => state.application)
 
   const [filter, setFilter] = useState(0);
-  const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
-  const downloadFile = () => {
+  useEffect(() => {
+    getApplicationById({ id }).then(res => console.log(res))
+  }, [id])
+
+
+  const downloadFile = (selectedFile) => {
     if (selectedFile) {
       const url = URL.createObjectURL(selectedFile);
       const link = document.createElement('a');
@@ -35,32 +44,32 @@ const ApplicationDetailPage = () => {
             <div className="row">
                 <div className="col">
                     <Text fontWeight={500}>Имя</Text>
-                    <Input value='Нуратан' disabled/>
+                    <Input value={application.first_name} disabled/>
                 </div>
                 <div className="col">
                     <Text fontWeight={500}>Фамилия</Text>
-                    <Input value='Кадыров' disabled/>
+                    <Input value={application.last_name} disabled/>
                 </div>
             </div>
             <div className="row">
                 <div className="col">
                     <Text fontWeight={500}>Телефон</Text>
-                    <Input value='Нуратан' disabled/>
+                    <Input  value={application.phone_number} disabled/>
                 </div>
                 <div className="col">
-                    <Checkbox size='lg' mt={5} colorScheme='blue' defaultChecked>
+                    <Checkbox size='lg' mt={5} colorScheme='blue' checked={application?.isForeigner}>
                         Иностранец
                     </Checkbox>
                 </div>
             </div>
             <div className="row">
                 <div className="col">
-                    <Text fontWeight={500}>Имя</Text>
-                    <Input value='Нуратан' disabled/>
+                    <Text fontWeight={500}>Тип</Text>
+                    <Input value={application?.type} disabled/>
                 </div>
                 <div className="col">
-                    <Text fontWeight={500}>Имя</Text>
-                    <Input value='Нуратан' disabled/>
+                    <Text fontWeight={500}>Email</Text>
+                    <Input value={application?.email} disabled/>
                 </div>
             </div>
             <div className="row">
@@ -69,21 +78,21 @@ const ApplicationDetailPage = () => {
                     <div
                         style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
-                    {selectedFile ? (
+                    {application?.diplom ? (
                         <div>
-                        {selectedFile.type.startsWith('image/') ? (
+                        {application?.diplom.type.startsWith('image/') ? (
                             <div>
                             <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
                             </div>
                         ) : (
                             <div>
-                            <strong>Выбранный файл:</strong> {selectedFile.name}
+                            <strong>Выбранный файл:</strong> {application?.diplom.name}
                             </div>
                         )}
                         <div>
-                            <strong>Тип файла:</strong> {selectedFile.type}
+                            <strong>Тип файла:</strong> {application?.diplom.type}
                         </div>
-                        <button onClick={downloadFile}>Скачать файл</button>
+                        <button onClick={() => downloadFile(application?.diplom)}>Скачать файл</button>
                         </div>
                     ) : (
                         <Text fontWeight={500}>Произошла ошибка!</Text>
@@ -96,21 +105,21 @@ const ApplicationDetailPage = () => {
                     <div
                         style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
-                    {selectedFile ? (
+                    {application?.diplom ? (
                         <div>
-                        {selectedFile.type.startsWith('image/') ? (
+                        {application?.diplom.type.startsWith('image/') ? (
                             <div>
                                 <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
                             </div>
                         ) : (
                             <div>
-                            <strong>Выбранный файл:</strong> {selectedFile.name}
+                            <strong>Выбранный файл:</strong> {application?.diplom.name}
                             </div>
                         )}
                         <div>
-                            <strong>Тип файла:</strong> {selectedFile.type}
+                            <strong>Тип файла:</strong> {application?.diplom.type}
                         </div>
-                        <button onClick={downloadFile}>Скачать файл</button>
+                        <button onClick={() => downloadFile(application?.diplom)}>Скачать файл</button>
                         </div>
                     ) : (
                         <Text fontWeight={500}>Произошла ошибка!</Text>
@@ -120,33 +129,37 @@ const ApplicationDetailPage = () => {
                 </div>
             </div>
             <div className="row">
-                <div className="col">
-                    <Text fontWeight={500} mb={2}>Сертификаты</Text>
-                    <div
-                        style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                    >
-                    {selectedFile ? (
-                        <div>
-                        {selectedFile.type.startsWith('image/') ? (
-                            <div>
-                                <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
-                            </div>
-                        ) : (
-                            <div>
-                            <strong>Выбранный файл:</strong> {selectedFile.name}
-                            </div>
-                        )}
-                        <div>
-                            <strong>Тип файла:</strong> {selectedFile.type}
-                        </div>
-                        <button onClick={downloadFile}>Скачать файл</button>
-                        </div>
-                    ) : (
-                        <Text fontWeight={500}>Произошла ошибка!</Text>
-                    )}
+                {
+                    application?.certs?.map(item => (
+                        <div className="col">
+                            <Text fontWeight={500} mb={2}>Сертификаты</Text>
+                            <div
+                                style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                            >
+                            {item ? (
+                                <div>
+                                {item?.type?.startsWith('image/') ? (
+                                    <div>
+                                        <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
+                                    </div>
+                                ) : (
+                                    <div>
+                                    <strong>Выбранный файл:</strong> {item.name}
+                                    </div>
+                                )}
+                                <div>
+                                    <strong>Тип файла:</strong> {item.type}
+                                </div>
+                                <button onClick={() => downloadFile(item)}>Скачать файл</button>
+                                </div>
+                            ) : (
+                                <Text fontWeight={500}>Произошла ошибка!</Text>
+                            )}
 
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
             <div className="row">
                 <div className="col">
@@ -154,21 +167,21 @@ const ApplicationDetailPage = () => {
                     <div
                         style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
-                    {selectedFile ? (
+                    {application?.passport_back ? (
                         <div>
-                        {selectedFile.type.startsWith('image/') ? (
+                        {application?.passport_back?.type?.startsWith('image/') ? (
                             <div>
                                 <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
                             </div>
                         ) : (
                             <div>
-                            <strong>Выбранный файл:</strong> {selectedFile.name}
+                            <strong>Выбранный файл:</strong> {application?.passport_back?.name}
                             </div>
                         )}
                         <div>
-                            <strong>Тип файла:</strong> {selectedFile.type}
+                            <strong>Тип файла:</strong> {application?.passport_back?.type}
                         </div>
-                        <button onClick={downloadFile}>Скачать файл</button>
+                        <button onClick={() => downloadFile(application?.passport_back)}>Скачать файл</button>
                         </div>
                     ) : (
                         <Text fontWeight={500}>Произошла ошибка!</Text>
@@ -181,21 +194,21 @@ const ApplicationDetailPage = () => {
                     <div
                         style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
-                    {selectedFile ? (
+                    {application?.passport_front ? (
                         <div>
-                        {selectedFile.type.startsWith('image/') ? (
+                        {application?.passport_front?.type.startsWith('image/') ? (
                             <div>
                                 <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
                             </div>
                         ) : (
                             <div>
-                            <strong>Выбранный файл:</strong> {selectedFile.name}
+                            <strong>Выбранный файл:</strong> {application?.passport_front?.name}
                             </div>
                         )}
                         <div>
-                            <strong>Тип файла:</strong> {selectedFile.type}
+                            <strong>Тип файла:</strong> {application?.passport_front?.type}
                         </div>
-                        <button onClick={downloadFile}>Скачать файл</button>
+                        <button onClick={() => downloadFile(application?.passport_front)}>Скачать файл</button>
                         </div>
                     ) : (
                         <Text fontWeight={500}>Произошла ошибка!</Text>

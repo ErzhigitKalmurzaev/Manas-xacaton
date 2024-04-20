@@ -1,6 +1,6 @@
 import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/table'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import FilterButton from '../ui/FilterButton'
 import PageTitle from '../ui/PageTitle'
@@ -9,9 +9,17 @@ import useUserStore from '../store/useUserStore'
 const ApplicationPage = () => {
 
   const navigation = useNavigate();
+  const getApplicationsList = useUserStore(state => state.getApplicationsList);
+  const applications_list = useUserStore(state => state.applications_list)
 
   const [filter, setFilter] = useState(0);
+  const [applications, setApplications] = useState([]);
 
+  useEffect(() => {
+    getApplicationsList();
+  }, [])
+
+  // console.log(applications_list)
   return (
     <Wrapper>
         <PageTitle text="Заявки"/>
@@ -25,35 +33,23 @@ const ApplicationPage = () => {
             <Table variant='simple'>
               <Thead>
                 <Tr>
-                  <Th>To convert</Th>
-                  <Th>into</Th>
-                  <Th isNumeric>multiply by</Th>
+                  <Th>Имя</Th>
+                  <Th>Фамилия</Th>
+                  <Th>email</Th>
                 </Tr>
               </Thead>
-              <Tbody onClick={() => navigation('detail')}>
-                <Tr>
-                  <Td>inches</Td>
-                  <Td>millimetres (mm)</Td>
-                  <Td isNumeric>25.4</Td>
-                </Tr>
-                <Tr>
-                  <Td>feet</Td>
-                  <Td>centimetres (cm)</Td>
-                  <Td isNumeric>30.48</Td>
-                </Tr>
-                <Tr>
-                  <Td>yards</Td>
-                  <Td>metres (m)</Td>
-                  <Td isNumeric>0.91444</Td>
-                </Tr>
+              <Tbody>
+                {
+                  applications_list?.map(item => (
+                    <Tr onClick={() => navigation(`${item?.id}`)}>
+                      <Td>{item?.first_name}</Td>
+                      <Td>{item?.last_name}</Td>
+                      <Td>{item?.email}</Td>
+                    </Tr>
+
+                  ))
+                }
               </Tbody>
-              <Tfoot>
-                <Tr>
-                  <Th>To convert</Th>
-                  <Th>into</Th>
-                  <Th isNumeric>multiply by</Th>
-                </Tr>
-              </Tfoot>
             </Table>
           </TableContainer>
         </div>

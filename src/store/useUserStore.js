@@ -60,12 +60,33 @@ const  signin = async (email, password) => {
       }
 }
 
+const  getApplicationsList = async () => {
+    try {
+        const { data } = await axiosInstance.get(`abiturients/requests/`);
+        return data;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+}
+
+const  getApplicationById = async ({ id }) => {
+    try {
+        const { data } = await axiosInstance.get(`abiturients/requests/${id}/`);
+        return data;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+}
+
 const useUserStore = create(
     devtools(
         persist(
             (set, get) => ({
                 user: initialUserState,
-
+                applications_list: initialUserState,
+                application: initialUserState,
                 signIn: async (email, password) => {
                     const user = await signin(email, password);
                     set(()=>({user:user}));
@@ -78,6 +99,15 @@ const useUserStore = create(
                 register: async (user, password) => {
                     const response = await register(user, password);
                     set((state)=>({user: {...state.user, role:response.role}}));
+                },
+                getApplicationsList: async () => {
+                    const data = await getApplicationsList();
+                    console.log(data);
+                    set((state)=>({applications_list: data}));
+                },
+                getApplicationById: async ({ id }) => {
+                    const data = await getApplicationById({ id });
+                    set(state => ({application: data}))
                 },
                 reset: () => set(()=>({user:{...initialUserState}})),
             }),

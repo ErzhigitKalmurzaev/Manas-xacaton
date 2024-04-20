@@ -1,11 +1,13 @@
 import { Input } from '@chakra-ui/input'
-import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/table'
+import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, } from '@chakra-ui/table'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import { useNavigation } from 'react-router'
 import FilterButton from '../ui/FilterButton'
 import PageTitle from '../ui/PageTitle'
 import RedButton from '../ui/RedButton'
+import { Button } from '@chakra-ui/react'
+import { BsArrowDown } from 'react-icons/bs' 
 
 const QuestionnairesPage = () => {
 
@@ -76,7 +78,7 @@ const QuestionnairesPage = () => {
               <div>
                 <strong>File Type:</strong> {selectedFile.type}
               </div>
-              <button onClick={downloadFile}>Скачать файл</button>
+              <Button mt={4} onClick={downloadFile} _hover={{ color: 'blue.500' }} leftIcon={<BsArrowDown/>}>Скачать файл</Button>
             </div>
           ) : (
             <div>

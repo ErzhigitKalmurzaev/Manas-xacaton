@@ -14,7 +14,6 @@ const ApplicationPage = () => {
   console.log(applications_list)
 
   const [filter, setFilter] = useState(0);
-  const [applications, setApplications] = useState([]);
 
   useEffect(() => {
     getApplicationsList();
@@ -25,9 +24,9 @@ const ApplicationPage = () => {
     <Wrapper>
         <PageTitle text="Заявки"/>
         <div className='filters'>
-          <FilterButton text="Новые" onClick={() => setFilter(0)} active={filter === 0} />
-          <FilterButton text="Одобренные" onClick={() => setFilter(1)} active={filter === 1} />
-          <FilterButton text="Отказанные" onClick={() => setFilter(2)} active={filter === 2} />
+          <FilterButton text="Новые" onClick={() => {setFilter(0)}} active={filter === 0} />
+          <FilterButton text="Одобренные" onClick={() => {setFilter(1)}} active={filter === 1} />
+          <FilterButton text="Отказанные" onClick={() => {setFilter(-1)}} active={filter === -1} />
         </div>
         <div className="table">
           <TableContainer w='100%'>
@@ -41,15 +40,35 @@ const ApplicationPage = () => {
               </Thead>
               <Tbody>
                 {
-                  // applications_list?.map(item => (
-                  //   <Tr onClick={() => navigation(`${item?.id}`)}>
-                  //     <Td>{item?.first_name}</Td>
-                  //     <Td>{item?.last_name}</Td>
-                  //     <Td>{item?.email}</Td>
-                  //   </Tr>
-
-                  // ))
-                }
+                  applications_list.map((item,index) =>{
+                    if (item.is_confirmed === filter) {
+                      return (
+                        <Tr 
+                          key={index} 
+                          onClick={() => navigation(`${item?.id}`)} 
+                          _hover={{ cursor: 'pointer', bg: 'gray.50' }} 
+                        >
+                          <Td>{item?.first_name}</Td>
+                          <Td>{item?.last_name}</Td>
+                          <Td>{item?.email}</Td>
+                        </Tr>
+                      );
+                    }
+                    return null; // если условие не выполняется, возвращаем null или <></>
+                  })
+                  }
+                {/* {categories.map((category, index) => (
+                                <Button
+                                    leftIcon={<ChevronDownIcon />}
+                                    key={index}
+                                    bg={'white'}
+                                    textAlign={'left'}
+                                    justifyContent={'flex-start'}
+                                    onClick={() => { searchState.updateChoosen(category); onClose() }}
+                                >
+                                    {category}
+                                </Button>
+                            ))} */}
               </Tbody>
             </Table>
           </TableContainer>

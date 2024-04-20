@@ -142,10 +142,8 @@ const useUserStore = create(
                     set((state) => ({ user: { ...state.user, role: response.role } }));
                 },
                 getApplicationsList: async () => {
-                    console.log('data1');
                     const data = await getApplicationsList();
-                    console.log('data2');
-                    console.log("data: " + data);
+                    console.log("src:"+data)
                     if (data)
                         set((state) => ({ applications_list: data }));
                 },

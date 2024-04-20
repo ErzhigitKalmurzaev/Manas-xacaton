@@ -1,4 +1,4 @@
-import axiosInstance from "../api/axios.js"
+import axiosInstance, { ImageUploadingFetch } from "../api/axios.js"
 import { create } from "zustand";
 import { persist, devtools } from 'zustand/middleware'
 
@@ -8,12 +8,13 @@ const initialUserState = {
     department: "",
     firstName: "",
     lastName: "",
+    phone: "",
     email: "",
 }
 
-const  register = async (user, password, token) => {
+const  register = async (userData) => {
     try {
-        const { data } = axiosInstance.post(`users/${token}`, {...user,password:password})
+        const { data } = await axiosInstance.post(`users/register/`, userData)
         localStorage.setItem("accessgemplanet", data.access);
         localStorage.setItem("refreshgemplanet", data.refresh);
         return data
@@ -23,9 +24,33 @@ const  register = async (user, password, token) => {
       }
 }
 
+const  fetchApplication = async (data) => {
+    console.log("formData")
+    console.log(data)
+    try {
+        // const formData = new FormData();
+
+        // for(const key in data) {
+        //     if(key === 'certs') {
+        //         for(const cert of data[key]) {
+        //             formData.append('certs', cert);
+        //         }
+        //     } else {
+        //         formData.append(key, data[key]);
+        //     }
+        // }
+        // const { data } = await ImageUploadingFetch.post(`applications/`, formData)
+        // return data
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+}
+
 const  signin = async (email, password) => {
     try {
-        const { data } = axiosInstance.get(`token/`, {email:email,password:password})
+        console.log({email:email,password:password})
+        const { data } = axiosInstance.post(`users/login/`, {email:email,password:password})
         localStorage.setItem("accessgemplanet", data.access);
         localStorage.setItem("refreshgemplanet", data.refresh);
         return data
@@ -40,13 +65,19 @@ const useUserStore = create(
         persist(
             (set, get) => ({
                 user: initialUserState,
+
                 signIn: async (email, password) => {
                     const user = await signin(email, password);
                     set(()=>({user:user}));
                 },
+                application: async (formData) => {
+                    const response = await fetchApplication(formData);
+                    console.log(fetchApplication)
+                    return response
+                },
                 register: async (user, password) => {
                     const response = await register(user, password);
-                    set((state)=>({user: {...state.user,role:response.role}}));
+                    set((state)=>({user: {...state.user, role:response.role}}));
                 },
                 reset: () => set(()=>({user:{...initialUserState}})),
             }),

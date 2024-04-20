@@ -36,9 +36,9 @@ function RegistrationPage() {
     const handleClick = () => setShow(!show);
 
     const initialValues = {
-        firstName: '',
-        lastName: '',
-        phone: '',
+        first_name: '',
+        last_name: '',
+        phone_number: '',
         password: '',
         confirmPassword: '',
     };
@@ -46,9 +46,9 @@ function RegistrationPage() {
     
 
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string().required('First Name is required'),
-        lastName: Yup.string().required('Last Name is required'),
-        phone: Yup.string().required('phone is required'),
+        first_name: Yup.string().required('First Name is required'),
+        last_name: Yup.string().required('Last Name is required'),
+        phone_number: Yup.string().required('phone is required'),
         password: Yup.string().required('Password is required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -56,6 +56,7 @@ function RegistrationPage() {
     });
 
     const handleSubmit = async (values, { setSubmitting,setFieldError }) => {
+        console.log({...values,email:userData.email, token:userData.token})
         const response = await register({...values,email:userData.email, token:userData.token});
         setSubmitting(false);
     };
@@ -72,20 +73,20 @@ function RegistrationPage() {
                         <Form>
                             <VStack spacing={4}>
                                 <HStack spacing={2} w={'100%'}>
-                                    <Field name="firstName">
+                                    <Field name="first_name">
                                         {({ field }) => (
                                             <FormControl isInvalid={!!field.error}>
                                                 <Input {...field} placeholder="Имя" />
-                                                <ErrorMessage name="firstName" component={FormHelperText} color="red" />
+                                                <ErrorMessage name="first_name" component={FormHelperText} color="red" />
                                             </FormControl>
                                         )}
                                     </Field>
 
-                                    <Field name="lastName">
+                                    <Field name="last_name">
                                         {({ field }) => (
                                             <FormControl isInvalid={!!field.error}>
                                                 <Input {...field} placeholder="Фамилия" />
-                                                <ErrorMessage name="lastName" component={FormHelperText} color="red" />
+                                                <ErrorMessage name="last_name" component={FormHelperText} color="red" />
                                             </FormControl>
                                         )}
                                     </Field>
@@ -93,11 +94,11 @@ function RegistrationPage() {
 
                                 
 
-                                <Field name="phone">
+                                <Field name="phone_number">
                                     {({ field }) => (
                                         <FormControl isInvalid={!!field.error}>
                                             <Input {...field} placeholder="Телефон"  />
-                                            <ErrorMessage name="phone" component={FormHelperText} color="red" />
+                                            <ErrorMessage name="phone_number" component={FormHelperText} color="red" />
                                         </FormControl>
                                     )}
                                 </Field>

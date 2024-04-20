@@ -24,23 +24,42 @@ const  register = async (userData) => {
       }
 }
 
-const  fetchApplication = async (data) => {
-    console.log("formData")
-    console.log(data)
-    try {
-        // const formData = new FormData();
+const base64ToBlob = (base64, type = 'application/octet-stream') => {
+    const binStr = atob(base64.split(',')[1]);
+    const len = binStr.length;
+    const arr = new Uint8Array(len);
+  
+    for (let i = 0; i < len; i++) {
+      arr[i] = binStr.charCodeAt(i);
+    }
+  
+    return new File([arr], "filename", { type: type });
+  };
 
-        // for(const key in data) {
-        //     if(key === 'certs') {
-        //         for(const cert of data[key]) {
-        //             formData.append('certs', cert);
-        //         }
-        //     } else {
-        //         formData.append(key, data[key]);
-        //     }
-        // }
-        // const { data } = await ImageUploadingFetch.post(`applications/`, formData)
-        // return data
+const  fetchApplication = async (fData) => {
+    try {
+        const formData = new FormData();
+
+        for(const key in fData) {
+            if(key === 'certs') {
+                for(const cert in fData[key]) {
+                    console.log(fData[key][cert])
+                    const file = base64ToBlob(fData[key][cert]);
+                    formData.append('certs', file);
+            }
+            } else {
+                console.log(typeof(fData[key]))
+                if(typeof fData[key] === 'string' && fData[key].startsWith('data')){
+                    const file = base64ToBlob(fData[key]);
+                    formData.append(key, file);
+                }else{
+                    formData.append(key, fData[key]);
+                }
+                
+            }
+        }
+        const { data } = await ImageUploadingFetch.post(`abiturients/request-create/`, formData)
+        return data
       } catch (error) {
         console.error(error);
         return false;
@@ -93,8 +112,6 @@ const useUserStore = create(
                 },
                 application: async (formData) => {
                     const response = await fetchApplication(formData);
-                    console.log(fetchApplication)
-                    return response
                 },
                 register: async (user, password) => {
                     const response = await register(user, password);

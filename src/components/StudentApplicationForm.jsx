@@ -29,10 +29,7 @@ const validationSchema = Yup.object().shape({
   type: Yup.string().required('Обязательное поле'),
   diplom: Yup.mixed().required('Обязательное поле'),
   isForeigner: Yup.boolean(),
-  nostrification: Yup.mixed().when('isForeigner', {
-    is: true,
-    then: Yup.mixed().required('Обязательное поле').typeError('Обязательное поле'),
-  }),
+  nostrification: Yup.mixed().required('Обязательное поле').typeError('Обязательное поле'),
   passport_front: Yup.mixed().required('Обязательное поле'),
   passport_back: Yup.mixed().required('Обязательное поле'),
   photo: Yup.mixed().required('Обязательное поле'),
@@ -41,11 +38,10 @@ const validationSchema = Yup.object().shape({
 
 const StudentApplicationForm = () => {
   const application = useUserStore((state) => state.application);
-  console.log(application)
-  const handleSubmit = async (values, formik) => {
+  const handleSubmit = async (values, { setSubmitting,setFieldError }) => {
     console.log(values);
     const response = await application(values);
-    formik.setSubmitting(false);
+    setSubmitting(false);
   };
   const [imageSrcs, setImageSrcs] = useState(null);
   return (
@@ -60,7 +56,7 @@ const StudentApplicationForm = () => {
             last_name: '',
             email: '',
             phone_number: '',
-            department: '',
+            department: 0,
             type: '',
             diplom: null,
             isForeigner: false,
@@ -73,10 +69,7 @@ const StudentApplicationForm = () => {
           validateOnChange={false}
           validateOnBlur={false}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
-            // Здесь можно добавить логику отправки формы на сервер
-          }}
+          onSubmit={handleSubmit}
         >
           {(formik) => (
             <Form>
@@ -86,7 +79,6 @@ const StudentApplicationForm = () => {
                   {({ field }) => (
                     <FormControl isInvalid={!!formik.errors.first_name}>
                       <FormLabel htmlFor="first_name">Имя</FormLabel>
-                      {console.log(formik)}
                       <Input {...field} placeholder="Имя" />
                       <FormErrorMessage color={'red'}>{formik.errors.first_name}</FormErrorMessage>
                     </FormControl>
@@ -129,17 +121,17 @@ const StudentApplicationForm = () => {
                   <FormControl isInvalid={!!formik.errors.department}>
                     <FormLabel htmlFor="department">Отделение</FormLabel>
                     <Select {...field} placeholder="Выберите кафедру">
-                      <option value="applied_mathematics">Кафедра прикладной математики</option>
-                      <option value="computer_engineering">Кафедра компьютерной инженерии</option>
-                      <option value="software_engineering">Кафедра программной инженерии</option>
-                      <option value="physics">Кафедра физики</option>
-                      <option value="chemistry">Кафедра химии</option>
-                      <option value="biology">Кафедра биологии</option>
-                      <option value="linguistics">Кафедра лингвистики</option>
-                      <option value="history">Кафедра истории</option>
-                      <option value="economics">Кафедра экономики</option>
-                      <option value="law">Кафедра права</option>
-                      <option value="psychology">Кафедра психологии</option>
+                      <option value={1}>Кафедра прикладной математики</option>
+                      <option value={2}>Кафедра компьютерной инженерии</option>
+                      <option value={3}>Кафедра программной инженерии</option>
+                      <option value={4}>Кафедра физики</option>
+                      <option value={5}>Кафедра химии</option>
+                      <option value={6}>Кафедра биологии</option>
+                      <option value={7}>Кафедра лингвистики</option>
+                      <option value={8}>Кафедра истории</option>
+                      <option value={9}>Кафедра экономики</option>
+                      <option value={10}>Кафедра права</option>
+                      <option value={11}>Кафедра психологии</option>
                       {/* Добавьте другие кафедры по аналогии */}
                     </Select>
                     <FormErrorMessage>{formik.errors.department}</FormErrorMessage>
@@ -221,7 +213,7 @@ const StudentApplicationForm = () => {
                 target="certs"
                 title={"Сертификаты"} />
 
-              <Button mt={4} bg={'red.700'} color={'white'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }} onSubmit={() => handleSubmit(formik.values, formik)} onClick={() => console.log(formik.values)}>
+              <Button mt={4} bg={'red.700'} color={'white'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }} >
                 Зарегистрироваться
               </Button>
               </VStack>

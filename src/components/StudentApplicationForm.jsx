@@ -18,50 +18,34 @@ import {
   Text
 } from '@chakra-ui/react';
 import ImageUpload from './ImageUpload';
+import useUserStore from '../store/useUserStore';
 
 const validationSchema = Yup.object().shape({
-  firstname: Yup.string().required('Обязательное поле'),
-  lastname: Yup.string().required('Обязательное поле'),
+  first_name: Yup.string().required('Обязательное поле'),
+  last_name: Yup.string().required('Обязательное поле'),
   email: Yup.string().email('Некорректный email').required('Обязательное поле'),
-  phone: Yup.string().required('Обязательное поле'),
+  phone_number: Yup.string().required('Обязательное поле'),
   department: Yup.string().required('Обязательное поле'),
   type: Yup.string().required('Обязательное поле'),
   diplom: Yup.mixed().required('Обязательное поле'),
   isForeigner: Yup.boolean(),
   nostrification: Yup.mixed().when('isForeigner', {
     is: true,
-    then: Yup.mixed().required('Обязательное поле'),
+    then: Yup.mixed().required('Обязательное поле').typeError('Обязательное поле'),
   }),
-  passport: Yup.mixed().required('Обязательное поле'),
+  passport_front: Yup.mixed().required('Обязательное поле'),
+  passport_back: Yup.mixed().required('Обязательное поле'),
   photo: Yup.mixed().required('Обязательное поле'),
   certs: Yup.mixed().required('Обязательное поле'),
 });
 
 const StudentApplicationForm = () => {
-  const handleMultipleFileChange = (e, formik, target) => {
-    const files = e.target.files;
-
-    const filePromises = Array.from(files).map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          resolve(event.target.result);
-        };
-        reader.onerror = (error) => {
-          reject(error);
-        };
-        reader.readAsDataURL(file);
-      });
-    });
-
-    Promise.all(filePromises)
-      .then((results) => {
-        setImageSrcs({ ...imageSrcs, [target]: results });
-        formik.setFieldValue("certs", files); // Установите все файлы в Formik
-      })
-      .catch((error) => {
-        console.error("Error reading files:", error);
-      });
+  const application = useUserStore((state) => state.application);
+  console.log(application)
+  const handleSubmit = async (values, formik) => {
+    console.log(values);
+    const response = await application(values);
+    formik.setSubmitting(false);
   };
   const [imageSrcs, setImageSrcs] = useState(null);
   return (
@@ -72,16 +56,17 @@ const StudentApplicationForm = () => {
         </Box>
         <Formik
           initialValues={{
-            firstname: '',
-            lastname: '',
+            first_name: '',
+            last_name: '',
             email: '',
-            phone: '',
+            phone_number: '',
             department: '',
             type: '',
             diplom: null,
             isForeigner: false,
             nostrification: null,
-            passport: null,
+            passport_front: null,
+            passport_back: null,
             photo: null,
             certs: [],
           }}
@@ -97,22 +82,23 @@ const StudentApplicationForm = () => {
             <Form>
               <VStack spacing={2}>
               <HStack w={'100%'}>
-                <Field name="firstname">
+                <Field name="first_name">
                   {({ field }) => (
-                    <FormControl isInvalid={!!formik.errors.firstname}>
-                      <FormLabel htmlFor="firstname">Имя</FormLabel>
+                    <FormControl isInvalid={!!formik.errors.first_name}>
+                      <FormLabel htmlFor="first_name">Имя</FormLabel>
+                      {console.log(formik)}
                       <Input {...field} placeholder="Имя" />
-                      <FormErrorMessage color={'red'}>{formik.errors.firstname}</FormErrorMessage>
+                      <FormErrorMessage color={'red'}>{formik.errors.first_name}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
 
-                <Field name="lastname">
+                <Field name="last_name">
                   {({ field }) => (
-                    <FormControl isInvalid={!!formik.errors.lastname}>
-                      <FormLabel htmlFor="lastname">Фамилия</FormLabel>
+                    <FormControl isInvalid={!!formik.errors.last_name}>
+                      <FormLabel htmlFor="last_name">Фамилия</FormLabel>
                       <Input {...field} placeholder="Фамилия" variant={'outline'} />
-                      <FormErrorMessage>{formik.errors.lastname}</FormErrorMessage>
+                      <FormErrorMessage>{formik.errors.last_name}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -128,12 +114,12 @@ const StudentApplicationForm = () => {
                   )}
                 </Field>
 
-                <Field name="phone">
+                <Field name="phone_number">
                   {({ field }) => (
-                    <FormControl isInvalid={!!formik.errors.phone}>
+                    <FormControl isInvalid={!!formik.errors.phone_number}>
                       <FormLabel htmlFor="phone">Телефон</FormLabel>
                       <Input {...field} placeholder="Телефон" />
-                      <FormErrorMessage>{formik.errors.phone}</FormErrorMessage>
+                      <FormErrorMessage>{formik.errors.phone_number}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -175,7 +161,8 @@ const StudentApplicationForm = () => {
               </Field>
 
               <ImageUpload
-                multiple={true}
+                sfv={formik.setFieldValue}
+                multiple={false}
                 formik={formik}
                 set={setImageSrcs}
                 sources={imageSrcs}
@@ -191,7 +178,7 @@ const StudentApplicationForm = () => {
               </Field>
               {formik.values.isForeigner && (
                 <ImageUpload
-                  multiple={true}
+                  multiple={false}
                   formik={formik}
                   set={setImageSrcs}
                   sources={imageSrcs}
@@ -199,15 +186,23 @@ const StudentApplicationForm = () => {
                   title={"Нострификация"} />
               )}
 
+              <HStack w={'100%'}>
+              <ImageUpload
+                multiple={false}
+                formik={formik}
+                set={setImageSrcs}
+                sources={imageSrcs}
+                target="passport_front"
+                title={"Паспорт спереди"} />
 
               <ImageUpload
                 multiple={false}
                 formik={formik}
                 set={setImageSrcs}
                 sources={imageSrcs}
-                target="passport"
-                title={"Паспорт"} />
-
+                target="passport_back"
+                title={"Паспорт сзади"} />
+              </HStack>
 
 
               <ImageUpload
@@ -226,7 +221,7 @@ const StudentApplicationForm = () => {
                 target="certs"
                 title={"Сертификаты"} />
 
-              <Button mt={4} bg={'red.700'} color={'white'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }}>
+              <Button mt={4} bg={'red.700'} color={'white'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }} onSubmit={() => handleSubmit(formik.values, formik)} onClick={() => console.log(formik.values)}>
                 Зарегистрироваться
               </Button>
               </VStack>

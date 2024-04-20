@@ -15,7 +15,7 @@ import {
     HStack
 } from '@chakra-ui/react';
 
-function ImageUpload({ formik, set, sources, target, title, multiple }) {
+function ImageUpload({ sfv, formik, set, sources, target, title, multiple }) {
     const handleMultipleFileChange = (e) => {
         const files = e.target.files;
 
@@ -35,7 +35,15 @@ function ImageUpload({ formik, set, sources, target, title, multiple }) {
         Promise.all(filePromises)
             .then((results) => {
                 set({ ...sources, [target]: results });
-                formik.setFieldValue({ target }, files); // Установите все файлы в Formik
+                console.log({ ...sources, [target]: results });
+                console.log(formik)
+                if(multiple){
+                    formik.values[target] = {...results}
+                }else{
+                    formik.values[target] = results[0]
+                }
+                
+                console.log(formik)
             })
             .catch((error) => {
                 console.error("Error reading files:", error);
@@ -50,14 +58,25 @@ function ImageUpload({ formik, set, sources, target, title, multiple }) {
                     {sources !== null && sources[target] && (
                         <Flex maxW={'80%'}>
                             {sources[target].map((tgt, index) => (
-                                <Image key={index} src={tgt} w={'100px'} h={'100px'} m={2} alt={`uploaded ${target}`} />
+                                
+                                <Image 
+                                    key={index} 
+                                    rounded={'md'} 
+                                    src={tgt.split(';').shift().trim()==='data:application/pdf'?'https://play-lh.googleusercontent.com/dl4ZuJhfD5xR9m2H-oZ9UcLZwYmGpmWMurPrvTiN831ZWLia9NbrYurXV-32wtOzPmM5':tgt} 
+                                    w={'72px'} 
+                                    h={'96px'} 
+                                    m={2} 
+                                    alt={`uploaded ${target}`} 
+                                    fit={'cover'}
+                                    />
                             ))}
                         </Flex>
                     )}
                     <Input
+                    {...field.name}
                         type="file"
                         multiple={multiple}
-                        onChange={(e) => { handleMultipleFileChange(e, formik) }}
+                        onChange={(e) => { handleMultipleFileChange(e) }}
                         border={'none'}
                         mt={2}
                     />

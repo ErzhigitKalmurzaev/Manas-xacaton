@@ -2,11 +2,22 @@ import styled from '@emotion/styled'
 import React from 'react'
 import RedButton from '../../ui/RedButton'
 import { useNavigate } from 'react-router-dom'
+import { GoMoveToBottom } from "react-icons/go";
 
 const MainPage = () => {
+    
     const navigate = useNavigate();
+
+    const scrollToBottom = () => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        });
+    }
+
   return (
     <Wrapper>
+        <img src="" alt="" />
         <p className='date'>2023-06-21</p>
         <p className='header'>ИНСТИТУТ ЕСТЕСТВЕННЫХ НАУК ОБЪЯВЛЯЕТ НАБОР В МАГИСТРАТУРУ И ДОКТОРАНТУРУ (PhD) НА 2023-2024 УЧЕБНЫЙ ГОД</p>
         <Table>
@@ -128,6 +139,10 @@ const MainPage = () => {
         <div className='button_div'>
             <RedButton text='Подать заявку'  onClick={() => navigate("/form")}/>
         </div>
+
+        <div className="scroll_button" onClick={scrollToBottom}>
+            <GoMoveToBottom size={35} style={{margin: 'auto auto'}} color='white'/>
+        </div>
     </Wrapper>
   )
 }
@@ -137,6 +152,7 @@ export default MainPage
 const Wrapper = styled('div')`
     width: 70%;
     margin: 40px auto;
+    position: 'relative';
     .date {
         padding: 10px 0;
     }
@@ -151,6 +167,27 @@ const Wrapper = styled('div')`
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .scroll_button {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        width: 55px;
+        height: 55px;
+        margin: 30px;
+        border-radius: 50%;
+        background: #b80924;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0px 0px 25px #b80924;
+        p {
+            color: white;
+            font-size: 17px;
+            font-weight: 500;
+        }
     }
 `;
 const Table = styled('div')`

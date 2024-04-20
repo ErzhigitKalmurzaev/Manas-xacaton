@@ -24,23 +24,23 @@ const  register = async (userData) => {
       }
 }
 
-const  fetchApplication = async (data) => {
-    console.log("formData")
-    console.log(data)
+const  fetchApplication = async (fData) => {
     try {
-        // const formData = new FormData();
+        const formData = new FormData();
 
-        // for(const key in data) {
-        //     if(key === 'certs') {
-        //         for(const cert of data[key]) {
-        //             formData.append('certs', cert);
-        //         }
-        //     } else {
-        //         formData.append(key, data[key]);
-        //     }
-        // }
-        // const { data } = await ImageUploadingFetch.post(`applications/`, formData)
-        // return data
+        for(const key in fData) {
+            if(key === 'certs') {
+                for(const cert in fData[key]) {
+                    console.log(cert)
+                    formData.append('certs', fData[key][cert]);
+            }
+            } else {
+                formData.append(key, fData[key]);
+            }
+        }
+        console.log(JSON.stringify(formData))
+        const { data } = await ImageUploadingFetch.post(`abiturients/request-create/`, formData)
+        return data
       } catch (error) {
         console.error(error);
         return false;
@@ -72,8 +72,6 @@ const useUserStore = create(
                 },
                 application: async (formData) => {
                     const response = await fetchApplication(formData);
-                    console.log(fetchApplication)
-                    return response
                 },
                 register: async (user, password) => {
                     const response = await register(user, password);

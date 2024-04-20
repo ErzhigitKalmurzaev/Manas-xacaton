@@ -29,10 +29,7 @@ const validationSchema = Yup.object().shape({
   type: Yup.string().required('Обязательное поле'),
   diplom: Yup.mixed().required('Обязательное поле'),
   isForeigner: Yup.boolean(),
-  nostrification: Yup.mixed().when('isForeigner', {
-    is: true,
-    then: Yup.mixed().required('Обязательное поле').typeError('Обязательное поле'),
-  }),
+  nostrification: Yup.mixed().required('Обязательное поле').typeError('Обязательное поле'),
   passport_front: Yup.mixed().required('Обязательное поле'),
   passport_back: Yup.mixed().required('Обязательное поле'),
   photo: Yup.mixed().required('Обязательное поле'),
@@ -41,11 +38,10 @@ const validationSchema = Yup.object().shape({
 
 const StudentApplicationForm = () => {
   const application = useUserStore((state) => state.application);
-  console.log(application)
-  const handleSubmit = async (values, formik) => {
+  const handleSubmit = async (values, { setSubmitting,setFieldError }) => {
     console.log(values);
     const response = await application(values);
-    formik.setSubmitting(false);
+    setSubmitting(false);
   };
   const [imageSrcs, setImageSrcs] = useState(null);
   return (
@@ -73,10 +69,7 @@ const StudentApplicationForm = () => {
           validateOnChange={false}
           validateOnBlur={false}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
-            // Здесь можно добавить логику отправки формы на сервер
-          }}
+          onSubmit={handleSubmit}
         >
           {(formik) => (
             <Form>
@@ -86,7 +79,6 @@ const StudentApplicationForm = () => {
                   {({ field }) => (
                     <FormControl isInvalid={!!formik.errors.first_name}>
                       <FormLabel htmlFor="first_name">Имя</FormLabel>
-                      {console.log(formik)}
                       <Input {...field} placeholder="Имя" />
                       <FormErrorMessage color={'red'}>{formik.errors.first_name}</FormErrorMessage>
                     </FormControl>
@@ -221,7 +213,7 @@ const StudentApplicationForm = () => {
                 target="certs"
                 title={"Сертификаты"} />
 
-              <Button mt={4} bg={'red.700'} color={'white'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }} onSubmit={() => handleSubmit(formik.values, formik)} onClick={() => console.log(formik.values)}>
+              <Button mt={4} bg={'red.700'} color={'white'} isLoading={formik.isSubmitting} type="submit" _hover={{ bg: 'red.800' }} >
                 Зарегистрироваться
               </Button>
               </VStack>

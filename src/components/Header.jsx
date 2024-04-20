@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import manas_logo from '../assets/image/Manas_logo.png';
-import { Button, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, useDisclosure, IconButton, Image } from '@chakra-ui/react'
 import {
     Modal,
     ModalOverlay,
@@ -19,13 +19,17 @@ import useUserStore from '../store/useUserStore';
 
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/react';
 import RegAndAuthModal from './RegAndAuthModal';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
     
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const navigate = useNavigate()
     return (
         <Wrapper>
-            <img src={manas_logo} alt="manas_icon" style={{ width: 90, height: 90 }} />
+            
+           <Image  src={manas_logo} w={'100px'} h={'85px'} onClick={()=>{navigate('/')}}/> 
+            
             <Buttons>
                 <div className='first_words'>
                     <p className='univer'>КЫРГЫЗСКО-ТУРЕЦКИЙ УНИВЕРСИТЕТ МАНАС</p>

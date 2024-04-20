@@ -9,13 +9,22 @@ import React, { useState } from 'react'
 import FilterButton from '../ui/FilterButton'
 import PageTitle from '../ui/PageTitle'
 import RedButton from '../ui/RedButton'
+import axiosInstance from '../api/axios'
 
 const CommissionPage = () => {
 
   const [filter, setFilter] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [email, setEmail] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const handleNewCommission = async () => {
+    try {
+      await axiosInstance.post(`/users/commission/create/`, {email:email})
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
 
   return (
     <Wrapper>
@@ -73,12 +82,12 @@ const CommissionPage = () => {
               <ModalCloseButton />
               <ModalBody>
                 <p style={{fontWeight: '500'}}>Email:</p>
-                <Input focusBorderColor="#2f4050" mb={3} description="email" label='Email' />
+                <Input value={email} onChange={(e) => setEmail(e.target.value)} focusBorderColor="#2f4050" mb={3} description="email" label='Email' />
                 <p style={{fontWeight: '500', margin: '5px auto', textAlign: 'center'}}>Чтобы добавить члена коммисии введите его email адресс.</p>
               </ModalBody>
 
               <ModalFooter>
-                <Button bg={'#2f4050'} color={'white'} margin={"0 auto"}>Отправить</Button>
+                <Button bg={'#2f4050'} color={'white'} margin={"0 auto"} onClick={handleNewCommission}>Отправить</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>

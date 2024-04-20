@@ -17,18 +17,21 @@ const RegAndAuthModal = () => {
         <>
             <Button 
                 onClick={onOpen} 
-                bg={'brand.blue'}
+                bg={'red'}
+                border={'1px solid white'}
                 w={'90%'}
                 color={'white'}
                 fontSize={14}
+                _hover={{bg: 'red.500'}}
             >
-                Войти или зарегистрироваться
+                Войти
             </Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay  backdropFilter='blur(5px)'/>
                 <ModalContent rounded={'3xl'} >
-                <Tabs>
+                <AuthForm/>
+                {/* <Tabs>
                     <TabList >
                         <Tab roundedTopStart={'3xl'}>Вход</Tab>
                         <Tab >Регистрация</Tab>
@@ -42,7 +45,7 @@ const RegAndAuthModal = () => {
                             <StudentRegForm/>
                         </TabPanel>
                     </TabPanels>
-                </Tabs>
+                </Tabs> */}
                 </ModalContent>
             </Modal>
         </>

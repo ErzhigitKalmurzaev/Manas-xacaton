@@ -69,9 +69,10 @@ const  fetchApplication = async (fData) => {
 const  signin = async (email, password) => {
     try {
         console.log({email:email,password:password})
-        const { data } = axiosInstance.post(`users/login/`, {email:email,password:password})
-        localStorage.setItem("accessgemplanet", data.access);
-        localStorage.setItem("refreshgemplanet", data.refresh);
+        const { data } = await axiosInstance.post(`users/login/`, {email:email,password:password})
+        console.log(data)
+        localStorage.setItem("accessgemplanet", data.token.access);
+        localStorage.setItem("refreshgemplanet", data.token.refresh);
         return data
       } catch (error) {
         console.error(error);
@@ -104,8 +105,8 @@ const useUserStore = create(
         persist(
             (set, get) => ({
                 user: initialUserState,
-                applications_list: initialUserState,
-                application: initialUserState,
+                applications_list: [''],
+                application: {},
                 signIn: async (email, password) => {
                     const user = await signin(email, password);
                     set(()=>({user:user}));
@@ -118,9 +119,12 @@ const useUserStore = create(
                     set((state)=>({user: {...state.user, role:response.role}}));
                 },
                 getApplicationsList: async () => {
+                    console.log('data1');
                     const data = await getApplicationsList();
-                    console.log(data);
-                    set((state)=>({applications_list: data}));
+                    console.log('data2');
+                    console.log("data: "+data);
+                    if(data)
+                        set((state)=>({applications_list: data}));
                 },
                 getApplicationById: async ({ id }) => {
                     const data = await getApplicationById({ id });

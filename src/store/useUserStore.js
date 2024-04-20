@@ -24,6 +24,18 @@ const  register = async (userData) => {
       }
 }
 
+const base64ToBlob = (base64, type = 'application/octet-stream') => {
+    const binStr = atob(base64.split(',')[1]);
+    const len = binStr.length;
+    const arr = new Uint8Array(len);
+  
+    for (let i = 0; i < len; i++) {
+      arr[i] = binStr.charCodeAt(i);
+    }
+  
+    return new File([arr], "filename", { type: type });
+  };
+
 const  fetchApplication = async (fData) => {
     try {
         const formData = new FormData();
@@ -31,14 +43,21 @@ const  fetchApplication = async (fData) => {
         for(const key in fData) {
             if(key === 'certs') {
                 for(const cert in fData[key]) {
-                    console.log(cert)
-                    formData.append('certs', fData[key][cert]);
+                    console.log(fData[key][cert])
+                    const file = base64ToBlob(fData[key][cert]);
+                    formData.append('certs', file);
             }
             } else {
-                formData.append(key, fData[key]);
+                console.log(typeof(fData[key]))
+                if(typeof fData[key] === 'string' && fData[key].startsWith('data')){
+                    const file = base64ToBlob(fData[key]);
+                    formData.append(key, file);
+                }else{
+                    formData.append(key, fData[key]);
+                }
+                
             }
         }
-        console.log(JSON.stringify(formData))
         const { data } = await ImageUploadingFetch.post(`abiturients/request-create/`, formData)
         return data
       } catch (error) {

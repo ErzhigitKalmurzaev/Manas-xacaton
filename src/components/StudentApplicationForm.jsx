@@ -56,7 +56,7 @@ const StudentApplicationForm = () => {
             last_name: '',
             email: '',
             phone_number: '',
-            department: '',
+            department: 0,
             type: '',
             diplom: null,
             isForeigner: false,
@@ -121,17 +121,17 @@ const StudentApplicationForm = () => {
                   <FormControl isInvalid={!!formik.errors.department}>
                     <FormLabel htmlFor="department">Отделение</FormLabel>
                     <Select {...field} placeholder="Выберите кафедру">
-                      <option value="applied_mathematics">Кафедра прикладной математики</option>
-                      <option value="computer_engineering">Кафедра компьютерной инженерии</option>
-                      <option value="software_engineering">Кафедра программной инженерии</option>
-                      <option value="physics">Кафедра физики</option>
-                      <option value="chemistry">Кафедра химии</option>
-                      <option value="biology">Кафедра биологии</option>
-                      <option value="linguistics">Кафедра лингвистики</option>
-                      <option value="history">Кафедра истории</option>
-                      <option value="economics">Кафедра экономики</option>
-                      <option value="law">Кафедра права</option>
-                      <option value="psychology">Кафедра психологии</option>
+                      <option value={1}>Кафедра прикладной математики</option>
+                      <option value={2}>Кафедра компьютерной инженерии</option>
+                      <option value={3}>Кафедра программной инженерии</option>
+                      <option value={4}>Кафедра физики</option>
+                      <option value={5}>Кафедра химии</option>
+                      <option value={6}>Кафедра биологии</option>
+                      <option value={7}>Кафедра лингвистики</option>
+                      <option value={8}>Кафедра истории</option>
+                      <option value={9}>Кафедра экономики</option>
+                      <option value={10}>Кафедра права</option>
+                      <option value={11}>Кафедра психологии</option>
                       {/* Добавьте другие кафедры по аналогии */}
                     </Select>
                     <FormErrorMessage>{formik.errors.department}</FormErrorMessage>

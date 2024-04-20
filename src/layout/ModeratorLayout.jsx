@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Outlet } from 'react-router-dom'
 import manas_logo from '../assets/image/Manas_logo.png';
+import { MdOutlineDashboardCustomize } from "react-icons/md";
 
 const ModeratorLayout = () => {
 
@@ -17,20 +18,19 @@ const ModeratorLayout = () => {
     }
 
     const pages = [
-        {text: "Заявки", link: "applications"}
+        {text: "Заявки", link: "applications", icon: <MdOutlineDashboardCustomize size={26}/>}
     ]
 
     return (
         <>
             <WrapLayout>
                 <Navbar>
-                    <img src={manas_logo} className='logo' alt="" />
                     <NavbarInner>
                         <p className='role'>Модератор</p>
                         {
                             pages?.map((item, index) => (
-                                <NavbarButton key={index+'but'} style={activePage === index ? {background: '#b80924', color: 'white'} : {}} onClick={() => changePage(index, item)}>
-                                    {item?.text}
+                                <NavbarButton key={index+'but'} style={activePage === index ? {color: 'white'} : {color: '#98a2b3'}} onClick={() => changePage(index, item)}>
+                                    {item?.icon} {item?.text}
                                 </NavbarButton>
                             ))
                         }
@@ -53,7 +53,7 @@ const WrapLayout = styled("div")`
   
 `;
 const Content = styled("div")`
-  padding-left: 350px;
+  padding-left: 300px;
   max-width: 95%;
   width: 100%;
   margin: 0 auto;
@@ -62,12 +62,10 @@ const Navbar = styled('div')`
     position: fixed;
     top: 0;
     left: 0;
-    width: 350px;
+    width: 300px;
     height: 100vh;
     z-index: 100;
-    /* border-right: 1px solid black; */
-    background: #f7f7f7;
-    box-shadow: 2px 3px 7px grey;
+    background: #2f4050;
     
     .logo {
         width: 130px;
@@ -76,27 +74,29 @@ const Navbar = styled('div')`
     }
 `;
 const NavbarInner = styled('div')`
-    padding: 0 40px;
     display: flex;
     flex-direction: column;
     gap: 2px;
     .role {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 500;
-        text-align: center;
-        margin: 20px 0;
+        margin-top: 50px;
+        padding: 15px 20px;
+        color: white;
     }
 `
 const NavbarButton = styled('button')`
     width: 100%;
-    font-size: 20px;
+    display: flex;
+    gap: 10px;
+    font-size: 19px;
     text-align: start;
+    color: '#d0d2d4';
     padding: 10px 30px;
     padding-left: 20px;
-    border-radius: 10px;
     :hover {
         transition: 0.3s ease;
-        background: #b80924;
+        background: '#9ca6b7';
         color: white;
     }
 `;

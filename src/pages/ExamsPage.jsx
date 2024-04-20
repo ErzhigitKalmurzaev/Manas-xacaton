@@ -63,7 +63,7 @@ const ExamsPage = () => {
 export default ExamsPage
 
 const Wrapper = styled('div')`
-  padding: 60px 10px 20px 10px;
+  padding: 40px 10px 20px 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;

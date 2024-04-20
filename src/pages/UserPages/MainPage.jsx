@@ -17,7 +17,7 @@ const MainPage = () => {
 
   return (
     <Wrapper>
-        <img src="" alt="" />
+        <img src="http://oidb.manas.edu.kg/images/6.jpg" alt='banner' />
         <p className='date'>2023-06-21</p>
         <p className='header'>ИНСТИТУТ ЕСТЕСТВЕННЫХ НАУК ОБЪЯВЛЯЕТ НАБОР В МАГИСТРАТУРУ И ДОКТОРАНТУРУ (PhD) НА 2023-2024 УЧЕБНЫЙ ГОД</p>
         <Table>
@@ -153,6 +153,10 @@ const Wrapper = styled('div')`
     width: 70%;
     margin: 40px auto;
     position: 'relative';
+    img {
+        width: 100%;
+        height: 500px;
+    }
     .date {
         padding: 10px 0;
     }

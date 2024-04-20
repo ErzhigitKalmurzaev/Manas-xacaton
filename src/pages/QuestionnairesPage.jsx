@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { useNavigation } from 'react-router'
 import FilterButton from '../ui/FilterButton'
 import PageTitle from '../ui/PageTitle'
+import RedButton from '../ui/RedButton'
 
 const QuestionnairesPage = () => {
 
@@ -84,6 +85,9 @@ const QuestionnairesPage = () => {
             </div>
           )}
         </div>
+        <div className='submit_button'>
+          <RedButton text='Отправить' onClick={() => {}}/>
+        </div>
     </Wrapper>
   )
 }
@@ -91,7 +95,7 @@ const QuestionnairesPage = () => {
 export default QuestionnairesPage
 
 const Wrapper = styled('div')`
-  padding: 60px 10px 20px 10px;
+  padding: 40px 10px 20px 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -100,6 +104,14 @@ const Wrapper = styled('div')`
     display: flex;
     gap: 10px;
     margin: 30px 0 0 0;
+  }
+
+  .submit_button {
+    align-self: start;
+    button {
+      width: 130px;
+      background: #2f4050;
+    }
   }
 
   .file {

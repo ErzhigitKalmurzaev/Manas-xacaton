@@ -85,7 +85,7 @@ const ExamsDetailPage = () => {
         </div>
         <div className='grade'>
             <Text mb={1} fontWeight={500}>Оценка:</Text>
-            <Input focusBorderColor="#b80924" w={'40%'} mb={6} placeholder='Введите оценку...' value={grade} onChange={(e) => setGrade(e.target.value)}/>
+            <Input focusBorderColor="#2f4050" w={'40%'} mb={6} placeholder='Введите оценку...' value={grade} onChange={(e) => setGrade(e.target.value)}/>
             <RedButton text="Отправить" onClick={() => navigation(-1)}/>
         </div>
     </Wrapper>
@@ -95,7 +95,7 @@ const ExamsDetailPage = () => {
 export default ExamsDetailPage
 
 const Wrapper = styled('div')`
-  padding: 60px 10px 20px 10px;
+  padding: 40px 10px 20px 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -124,6 +124,7 @@ const Wrapper = styled('div')`
         padding: 8px 12px;
         align-self: start;
         font-size: 16px;
+        background: #2f4050;
     }
   }
 `;

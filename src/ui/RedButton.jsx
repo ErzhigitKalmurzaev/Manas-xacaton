@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import React from 'react'
 
-const RedButton = ({ text, onClick }) => {
+const RedButton = ({ text, onClick, ...props }) => {
   return (
-    <Button onClick={onClick}>
+    <Button onClick={onClick} {...props}>
         {text}
     </Button>
   )

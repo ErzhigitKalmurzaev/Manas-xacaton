@@ -11,7 +11,6 @@ const ApplicationPage = () => {
   const navigation = useNavigate();
   const getApplicationsList = useUserStore(state => state.getApplicationsList);
   const applications_list = useUserStore(state => state.applications_list)
-  console.log(applications_list)
 
   const [filter, setFilter] = useState(0);
   const [applications, setApplications] = useState([]);
@@ -41,14 +40,14 @@ const ApplicationPage = () => {
               </Thead>
               <Tbody>
                 {
-                  // applications_list?.map(item => (
-                  //   <Tr onClick={() => navigation(`${item?.id}`)}>
-                  //     <Td>{item?.first_name}</Td>
-                  //     <Td>{item?.last_name}</Td>
-                  //     <Td>{item?.email}</Td>
-                  //   </Tr>
+                  applications_list?.map(item => (
+                    <Tr onClick={() => navigation(`${item?.id}`)}>
+                      <Td>{item?.first_name}</Td>
+                      <Td>{item?.last_name}</Td>
+                      <Td>{item?.email}</Td>
+                    </Tr>
 
-                  // ))
+                  ))
                 }
               </Tbody>
             </Table>

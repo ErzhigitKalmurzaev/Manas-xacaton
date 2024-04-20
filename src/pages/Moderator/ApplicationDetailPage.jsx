@@ -4,6 +4,7 @@ import { Text } from '@chakra-ui/layout'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import { toast } from 'react-toastify'
 import useUserStore from '../../store/useUserStore'
 import PageTitle from '../../ui/PageTitle'
 import RedButton from '../../ui/RedButton'
@@ -14,14 +15,23 @@ const ApplicationDetailPage = () => {
   const { id } = useParams();
 
   const getApplicationById = useUserStore(state => state.getApplicationById);
+  const postConfirmStatus = useUserStore(state => state.postConfirmStatus);
   const application = useUserStore(state => state.application)
 
   const [filter, setFilter] = useState(0);
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
-    getApplicationById({ id }).then(res => console.log(res))
+    getApplicationById({ id })
   }, [id])
+
+  const changeConfirm = async (conf) => {
+    const data = await postConfirmStatus({request_id: id, is_confirmed: conf})
+    if(data) {
+        toast.success("Ваш запрос обработан успешно!")
+        navigation(-1)
+    }
+  }
 
 
   const downloadFile = (selectedFile) => {
@@ -74,152 +84,31 @@ const ApplicationDetailPage = () => {
             </div>
             <div className="row">
                 <div className="col">
-                    <Text fontWeight={500} mb={2}>Диплом</Text>
-                    <div
-                        style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                    >
-                    {application?.diplom ? (
-                        <div>
-                        {application?.diplom.type.startsWith('image/') ? (
-                            <div>
-                            <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
-                            </div>
-                        ) : (
-                            <div>
-                            <strong>Выбранный файл:</strong> {application?.diplom.name}
-                            </div>
-                        )}
-                        <div>
-                            <strong>Тип файла:</strong> {application?.diplom.type}
-                        </div>
-                        <button onClick={() => downloadFile(application?.diplom)}>Скачать файл</button>
-                        </div>
-                    ) : (
-                        <Text fontWeight={500}>Произошла ошибка!</Text>
-                    )}
-
-                    </div>
+                    <Text fontWeight={500}>Фото (4x3)</Text>
+                    <img src={application?.photo} alt="" />
                 </div>
                 <div className="col">
-                    <Text fontWeight={500} mb={2}>Сертификаты</Text>
-                    <div
-                        style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                    >
-                    {application?.diplom ? (
-                        <div>
-                        {application?.diplom.type.startsWith('image/') ? (
-                            <div>
-                                <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
-                            </div>
-                        ) : (
-                            <div>
-                            <strong>Выбранный файл:</strong> {application?.diplom.name}
-                            </div>
-                        )}
-                        <div>
-                            <strong>Тип файла:</strong> {application?.diplom.type}
-                        </div>
-                        <button onClick={() => downloadFile(application?.diplom)}>Скачать файл</button>
-                        </div>
-                    ) : (
-                        <Text fontWeight={500}>Произошла ошибка!</Text>
-                    )}
-
-                    </div>
+                    <Text fontWeight={500}>Диплом</Text>
+                    <img src={application?.diplom} alt="" />
+                </div>
+                <div className="col">
+                    <Text fontWeight={500}>Диплом (подтверждение для иностранцев)</Text>
+                    <img src={application?.nostrification} alt="" />
                 </div>
             </div>
             <div className="row">
-                {
-                    application?.certs?.map(item => (
-                        <div className="col">
-                            <Text fontWeight={500} mb={2}>Сертификаты</Text>
-                            <div
-                                style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            >
-                            {item ? (
-                                <div>
-                                {item?.type?.startsWith('image/') ? (
-                                    <div>
-                                        <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
-                                    </div>
-                                ) : (
-                                    <div>
-                                    <strong>Выбранный файл:</strong> {item.name}
-                                    </div>
-                                )}
-                                <div>
-                                    <strong>Тип файла:</strong> {item.type}
-                                </div>
-                                <button onClick={() => downloadFile(item)}>Скачать файл</button>
-                                </div>
-                            ) : (
-                                <Text fontWeight={500}>Произошла ошибка!</Text>
-                            )}
-
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
-            <div className="row">
                 <div className="col">
-                    <Text fontWeight={500} mb={2}>Паспорт (спереди)</Text>
-                    <div
-                        style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                    >
-                    {application?.passport_back ? (
-                        <div>
-                        {application?.passport_back?.type?.startsWith('image/') ? (
-                            <div>
-                                <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
-                            </div>
-                        ) : (
-                            <div>
-                            <strong>Выбранный файл:</strong> {application?.passport_back?.name}
-                            </div>
-                        )}
-                        <div>
-                            <strong>Тип файла:</strong> {application?.passport_back?.type}
-                        </div>
-                        <button onClick={() => downloadFile(application?.passport_back)}>Скачать файл</button>
-                        </div>
-                    ) : (
-                        <Text fontWeight={500}>Произошла ошибка!</Text>
-                    )}
-
-                    </div>
+                    <Text fontWeight={500}>Паспорт (спереди)</Text>
+                    <img src={application?.passport_front} alt="" />
                 </div>
                 <div className="col">
-                    <Text fontWeight={500} mb={2}>Паспорт (сзади)</Text>
-                    <div
-                        style={{ width: '300px', height: '300px', border: '2px dashed #ccc', padding: '20px', textAlign: 'center', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                    >
-                    {application?.passport_front ? (
-                        <div>
-                        {application?.passport_front?.type.startsWith('image/') ? (
-                            <div>
-                                <img src={imageUrl} alt="Selected file" style={{ maxWidth: '220px', maxHeight: '220px', marginBottom: '10px' }} />
-                            </div>
-                        ) : (
-                            <div>
-                            <strong>Выбранный файл:</strong> {application?.passport_front?.name}
-                            </div>
-                        )}
-                        <div>
-                            <strong>Тип файла:</strong> {application?.passport_front?.type}
-                        </div>
-                        <button onClick={() => downloadFile(application?.passport_front)}>Скачать файл</button>
-                        </div>
-                    ) : (
-                        <Text fontWeight={500}>Произошла ошибка!</Text>
-                    )}
-
-                    </div>
+                    <Text fontWeight={500}>Паспорт (сзади)</Text>
+                    <img src={application?.passport_back} alt="" />
                 </div>
             </div>
             <div className='submit_button'>
-                <RedButton text="Одобрить" onClick={() => {}} className="conf"/>
-                <RedButton text="Отклонить" onClick={() => {}}/>
+                <RedButton text="Одобрить" onClick={() => changeConfirm(1)} className="conf"/>
+                <RedButton text="Отклонить" onClick={() => changeConfirm(-1)}/>
             </div>
         </Form>
     </Wrapper>
@@ -261,6 +150,11 @@ const Form = styled('div')`
         input {
             width: 350px;
             color: black;
+        }
+        img {
+            width: 250px;
+            height: 250px;
+            border: 1px dashed #ccc;
         }
     }
     .submit_button {

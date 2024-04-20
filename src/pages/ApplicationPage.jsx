@@ -11,7 +11,6 @@ const ApplicationPage = () => {
   const navigation = useNavigate();
   const getApplicationsList = useUserStore(state => state.getApplicationsList);
   const applications_list = useUserStore(state => state.applications_list)
-  console.log(applications_list)
 
   const [filter, setFilter] = useState(0);
 
@@ -69,6 +68,7 @@ const ApplicationPage = () => {
                                     {category}
                                 </Button>
                             ))} */}
+
               </Tbody>
             </Table>
           </TableContainer>

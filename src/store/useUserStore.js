@@ -120,6 +120,16 @@ const getApplicationById = async ({ id }) => {
     }
 }
 
+const postConfirmStatus = async (props) => {
+    try {
+        const { data } = await axiosInstance.post(`abiturients/requesr_confir/`, props);
+        return data;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
 const useUserStore = create(
     devtools(
         persist(
@@ -150,6 +160,10 @@ const useUserStore = create(
                 getApplicationById: async ({ id }) => {
                     const data = await getApplicationById({ id });
                     set(state => ({ application: data }))
+                },
+                postConfirmStatus: async (props) => {
+                    const data = await postConfirmStatus(props);
+                    return data;
                 },
                 reset: () => set(() => ({ user: { ...initialUserState } })),
             }),

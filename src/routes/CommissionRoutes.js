@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router'
 import CommissionLayout from '../layout/CommissionLayout'
 import ExamsDetailPage from '../pages/ExamsDetailPage';
 import ExamsPage from '../pages/ExamsPage';
@@ -11,6 +11,7 @@ const CommissionRoute = () => {
   return (
     <Routes>
         <Route path='/' element={<CommissionLayout/>}>
+            <Route index element={<Navigate to="rating" />} /> 
             <Route path="rating" element={<RatingPage />} />  
             <Route path="questionnaires" element={<QuestionnairesPage />} /> 
             <Route path="exams" element={<ExamsPage />} /> 

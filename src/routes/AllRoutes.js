@@ -10,6 +10,8 @@ import AdminRoutes from './AdminRoutes'
 
 const AllRoutes = () => {
 
+    const role = 'department';
+    
 
   return (
     <Routes>

@@ -5,7 +5,7 @@ const endSession = () => {
   return <Navigate to="/" replace />;
 };
 
-export const BASE_URL = "http://16.170.228.97/api/";
+export const BASE_URL = "http://192.168.45.91:8000/api/v1/";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

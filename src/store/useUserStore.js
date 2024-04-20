@@ -8,12 +8,13 @@ const initialUserState = {
     department: "",
     firstName: "",
     lastName: "",
+    phone: "",
     email: "",
 }
 
-const  register = async (user, password, token) => {
+const  register = async (userData) => {
     try {
-        const { data } = axiosInstance.post(`users/${token}`, {...user,password:password})
+        const { data } = await axiosInstance.post(`users/register/`, userData)
         localStorage.setItem("accessgemplanet", data.access);
         localStorage.setItem("refreshgemplanet", data.refresh);
         return data

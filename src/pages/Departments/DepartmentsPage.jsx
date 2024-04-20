@@ -73,12 +73,12 @@ const DepartmentPage = () => {
               <ModalCloseButton />
               <ModalBody>
                 <p style={{fontWeight: '500'}}>Email:</p>
-                <Input focusBorderColor="#b80924" mb={3} description="email" label='Email' />
+                <Input focusBorderColor="#2f4050" mb={3} description="email" label='Email' />
                 <p style={{fontWeight: '500', margin: '5px auto', textAlign: 'center'}}>Чтобы добавить заведующего кафедрой введите его email адресс.</p>
               </ModalBody>
 
               <ModalFooter>
-                <Button bg={'#b80924'} color={'white'} margin={"0 auto"}>Отправить</Button>
+                <Button bg={'#2f4050'} color={'white'} margin={"0 auto"}>Отправить</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
@@ -89,7 +89,7 @@ const DepartmentPage = () => {
 export default DepartmentPage
 
 const Wrapper = styled('div')`
-  padding: 60px 10px 20px 10px;
+  padding: 40px 10px 20px 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -97,6 +97,9 @@ const Wrapper = styled('div')`
   .title {
     display: flex;
     justify-content: space-between;
+    button {
+        background: #2f4050;
+    }
   }
   
   .table {

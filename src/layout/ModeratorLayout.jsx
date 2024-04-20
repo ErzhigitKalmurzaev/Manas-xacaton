@@ -18,7 +18,8 @@ const ModeratorLayout = () => {
     }
 
     const pages = [
-        {text: "Заявки", link: "applications", icon: <MdOutlineDashboardCustomize size={26}/>}
+        {text: "Заявки", link: "applications", icon: <MdOutlineDashboardCustomize size={26}/>},
+        {text: "Результаты экзаменов", link: "exam_results", icon: <MdOutlineDashboardCustomize size={26}/>}
     ]
 
     return (

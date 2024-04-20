@@ -69,9 +69,10 @@ const  fetchApplication = async (fData) => {
 const  signin = async (email, password) => {
     try {
         console.log({email:email,password:password})
-        const { data } = axiosInstance.post(`users/login/`, {email:email,password:password})
-        localStorage.setItem("accessgemplanet", data.access);
-        localStorage.setItem("refreshgemplanet", data.refresh);
+        const { data } = await axiosInstance.post(`users/login/`, {email:email,password:password})
+        console.log(data)
+        localStorage.setItem("accessgemplanet", data.token.access);
+        localStorage.setItem("refreshgemplanet", data.token.refresh);
         return data
       } catch (error) {
         console.error(error);

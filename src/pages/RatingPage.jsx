@@ -12,9 +12,8 @@ const RatingPage = () => {
     <Wrapper>
         <PageTitle text="Рейтинг"/>
         <div className='filters'>
-          <FilterButton text="Новые" onClick={() => setFilter(0)} active={filter === 0} />
-          <FilterButton text="Одобренные" onClick={() => setFilter(1)} active={filter === 1} />
-          <FilterButton text="Отказанные" onClick={() => setFilter(2)} active={filter === 2} />
+          <FilterButton text="По убыванию" onClick={() => setFilter(0)} active={filter === 0} />
+          <FilterButton text="По возрастанию" onClick={() => setFilter(1)} active={filter === 1} />
         </div>
         <div className="table">
           <TableContainer w='100%'>

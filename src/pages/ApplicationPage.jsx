@@ -40,14 +40,14 @@ const ApplicationPage = () => {
               </Thead>
               <Tbody>
                 {
-                  applications_list?.map(item => (
-                    <Tr onClick={() => navigation(`${item?.id}`)}>
-                      <Td>{item?.first_name}</Td>
-                      <Td>{item?.last_name}</Td>
-                      <Td>{item?.email}</Td>
-                    </Tr>
+                  // applications_list?.map(item => (
+                  //   <Tr onClick={() => navigation(`${item?.id}`)}>
+                  //     <Td>{item?.first_name}</Td>
+                  //     <Td>{item?.last_name}</Td>
+                  //     <Td>{item?.email}</Td>
+                  //   </Tr>
 
-                  ))
+                  // ))
                 }
               </Tbody>
             </Table>
